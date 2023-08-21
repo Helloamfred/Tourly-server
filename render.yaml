@@ -1,0 +1,60 @@
+# services:
+#   - type: web
+#     name: travel_the_world
+#     repo: https://github.com/Helloamfred/tourly-master-server.git # optional
+#     region: oregon # optional (defaults to oregon)
+#     plan: free # optional (defaults to starter instance type)
+#     branch: main # optional (defaults to master)
+#     healthCheckPath: /
+#     envVars:
+#       - key: DATABASE_URL
+#       fromDatabse:
+#         name: travel_the_world_db
+#         property: connectionString
+
+# databases:
+#   - name: travel_the_world_db
+#     databaseName: travel_the_worl_db # optional
+#     plan: free # optional (defaults to starter instance type)
+#     user: fredrick Ngatia # optional
+#     ipAllowList: # optional (defaults to allow all)
+#       - source: 203.0.113.4/30
+#         description: office
+#       - source: 198.51.100.1
+#         description: home
+
+services:
+  - type: web
+    name: travel_the_world
+    repo: https://github.com/Helloamfred/tourly-master-server.git # optional
+    region: oregon # optional (defaults to oregon)
+    runtime: node
+    startCommand: "npm run server"
+    plan: free # optional (defaults to starter instance type)
+    branch: main # optional (defaults to master)
+    healthCheckPath: /
+    # envVars:
+    #   - key: DATABASE_URL
+    #   fromDatabse:
+    #     name: travel_the_world_db
+    #     property: connectionString
+
+  - type: pserv
+    name: mysql
+    plan: free
+    env: docker
+    autoDeploy: false
+    envVars:
+      - fromGroup: mysql
+
+envVarGroups:
+  - name: mysql
+    envVars:
+      - key: MYSQL_DATABASE
+        value: mysql
+      - key: MYSQL_USER
+        value: mysql
+      - key: MYSQL_PASSWORD
+        generateValue: true
+      - key: MYSQL_ROOT_PASSWORD
+        generateValue: true

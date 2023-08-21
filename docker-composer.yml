@@ -1,0 +1,20 @@
+version: '3.1'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "8000:5000"
+
+  db:
+      build:
+        context: .
+        dockerfile: docker_data/Dockerfile
+      ports:
+        - 8083:3306
+      volumes:
+        - ./mysql:/var/lib/mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: wp    
